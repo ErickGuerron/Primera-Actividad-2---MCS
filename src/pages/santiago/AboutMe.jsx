@@ -136,16 +136,17 @@ export const AboutSantiago = () => {
                                   <p className="text-gray-300 mb-4">
                                       Este proyecto de juego demuestra mis habilidades en desarrollo interactivo, lógica de programación y diseño de experiencias divertidas y envolventes.
                                   </p>
-                                  {/* <div className="aspect-video w-full rounded-md overflow-hidden bg-gray-800 flex items-center justify-center game-embed">
-                                      <iframe
-                                          frameBorder="0"
-                                          src="https://itch.io/embed-upload/13627977?color=333333"
-                                          allowFullScreen
-                                          allow="autoplay; fullscreen; gamepad; xr-spatial-tracking"
-                                      >
-                                          <a href="https://littlepuppet.itch.io/worldwar-3-2099">Play WorldWar 3 2099 on itch.io</a>
-                                      </iframe>
-                                  </div> */}
+                                  <div className="w-full max-w-xl mx-auto aspect-[9/16] rounded-md overflow-hidden bg-gray-900 shadow-lg">
+                                    <iframe
+                                        src="/juegoSantiago/whackAClub.html"  
+                                        width="100%"
+                                        height="100%"
+                                        frameBorder="0"
+                                        allowFullScreen
+                                        title="Whack-a-Club"
+                                        className="rounded-md"
+                                    />
+                                    </div>
                               </div>
                           </div>
                       </div>
