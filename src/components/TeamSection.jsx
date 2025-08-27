@@ -1,4 +1,5 @@
  import { useNavigate } from "react-router-dom";
+ import MabeImage from "../pages/mabe/mabe.jpg"; 
 
 export const TeamSection = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export const TeamSection = () => {
     { name: "Erick", role: "Fullstack Developer", image: "https://via.placeholder.com/200", route: "/aboutErick" },
     { name: "Ana", role: "UI/UX Designer", image: "https://via.placeholder.com/200", route: "/aboutMabe" },
     { name: "Luis", role: "Backend Developer", image: "https://via.placeholder.com/200", route: "/aboutErick" },
-    { name: "María", role: "Frontend Developer", image: "https://via.placeholder.com/200", route: "/aboutMabe" },
+    { name: "Mabe", role: "Frontend Developer", image: MabeImage, route: "/aboutMabe" },
     { name: "Carlos", role: "DevOps Engineer", image: "https://via.placeholder.com/200", route: "/aboutErick" },
   ];
 

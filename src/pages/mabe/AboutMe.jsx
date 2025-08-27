@@ -2,7 +2,7 @@ import { Briefcase, Code, User, Joystick, Heart, Lightbulb } from "lucide-react"
 import { Navbar } from "../../components/Navbar";
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { StarBackground } from "../../components/StarBackground";
-import MabeImage from "./mabe.jpg"; // ✅ Importa la imagen correctamente
+import MabeImage from "./mabe.jpg"; 
 
 export const AboutSection = () => {
 return (
