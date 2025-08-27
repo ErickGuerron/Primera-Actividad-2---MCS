@@ -1,0 +1,547 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Yeyo Baila con Carriles - Mejorado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    :root {
+      --bg: #0f0f12;
+      --panel: #1b1b22;
+      --accent: #9ef01a;
+      --text: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin:0; }
+    body {
+      background: var(--bg);
+      font-family: 'Press Start 2P', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+    }
+
+    #gameWrapperContainer {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #gameWrapper {
+      width: 500px;
+      height: 700px;
+      position: relative;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.4);
+      background: #222;
+      display: none;
+    }
+
+    .pixelito {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      z-index: 10;
+      display: none;
+    }
+
+    /* Pantallas */
+    .screen {
+      position: absolute; inset: 0;
+      background: rgba(10,10,12,0.92);
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px;
+      text-align: center; padding: 20px; border-radius: 12px;
+    }
+    #endModal, #errorScreen { display: none; }
+
+    .title { font-size: 20px; letter-spacing: 1px; }
+    .btn {
+      padding: 12px 20px; font-size: 14px; border: 0; border-radius: 10px; cursor: pointer;
+      background: var(--accent); color: #0a0a0c; transition: transform .06s ease;
+    }
+    .btn:active { transform: translateY(2px); }
+    .row { display: flex; align-items: center; gap: 10px; }
+    input[type="range"] { width: 220px; }
+
+    .hint { font-size: 10px; opacity: .9; line-height: 1.6; max-width: 90%; }
+
+    .hit-effect {
+      position: absolute;
+      pointer-events: none;
+      font-size: 20px;
+      color: #9ef01a;
+      z-index: 15;
+      animation: hitPop 0.5s ease-out forwards;
+    }
+
+    @keyframes hitPop {
+      0% { transform: scale(1) translateY(0); opacity: 1; }
+      100% { transform: scale(1.5) translateY(-30px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="gameWrapperContainer">
+    <div id="gameWrapper">
+      <canvas id="gameCanvas" width="500" height="700"></canvas>
+      <img id="yeyoGif" src="yeyo.gif" class="pixelito">
+
+      <!-- Pantallas -->
+      <div id="startScreen" class="screen">
+        <div class="title">🎵 Yeyo Baila 🎵</div>
+        <div class="hint">Controles: ← ↑ ↓ → y Barra Espaciadora</div>
+        <div class="hint">¡Presiona las teclas cuando las flechas lleguen a la línea blanca!</div>
+        <button id="playBtn" class="btn" disabled>▶ Cargando...</button>
+        <div class="row">
+          <span>🎵 Volumen</span>
+          <input id="volumeControl" type="range" min="0" max="1" step="0.05" value="0.6">
+        </div>
+        <div class="hint">Tip: haz clic en "Play" para habilitar el audio (política del navegador)</div>
+      </div>
+
+      <div id="endModal" class="screen">
+        <div id="endMessage" class="title">¡Juego Terminado!</div>
+        <p id="finalScore">Puntaje: 0</p>
+        <p id="accuracy">Precisión: 0%</p>
+        <button id="restartBtn" class="btn">Volver a jugar</button>
+        <button id="homeBtn" class="btn">Volver al inicio</button>
+      </div>
+
+      <div id="errorScreen" class="screen">
+        <div class="title">❌ Error al cargar recursos</div>
+        <p>No se pudieron cargar las imágenes necesarias.</p>
+        <button id="errorHomeBtn" class="btn">Volver al inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="cancion.mp3"></audio>
+
+  <script>
+    // Obtener elementos del DOM primero
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const music = document.getElementById('bgMusic');
+    const yeyoGif = document.getElementById('yeyoGif');
+    const wrapper = document.getElementById('gameWrapper');
+    
+    function resizeCanvas() {
+      const container = document.getElementById('gameWrapperContainer');
+      const scaleX = container.clientWidth / wrapper.offsetWidth;
+      const scaleY = container.clientHeight / wrapper.offsetHeight;
+      const scale = Math.min(scaleX, scaleY);
+      wrapper.style.transform = `scale(${scale})`;
+      wrapper.style.transformOrigin = 'center top';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Elementos UI
+    const startScreen = document.getElementById("startScreen");
+    const playBtn = document.getElementById("playBtn");
+    const volumeControl = document.getElementById("volumeControl");
+    const endModal = document.getElementById("endModal");
+    const finalScoreDisplay = document.getElementById("finalScore");
+    const accuracyDisplay = document.getElementById("accuracy");
+    const endMessage = document.getElementById("endMessage");
+    const restartBtn = document.getElementById("restartBtn");
+    const homeBtn = document.getElementById("homeBtn");
+    const errorScreen = document.getElementById("errorScreen");
+    const errorHomeBtn = document.getElementById("errorHomeBtn");
+
+    // Configuración carriles
+    const lanes = ["left", "up", "down", "right", "space"];
+    const laneCount = lanes.length;
+    const laneWidth = canvas.width / laneCount;
+    const hitLineY = 550; // Línea de hit más arriba para dar más espacio
+
+    // Imágenes flechas
+    const arrowImagesSrc = {
+      left: "izquierda.png",
+      right: "derecha.png",
+      up: "arriba.png",
+      down: "abajo.png",
+      space: "space.jpg"
+    };
+    const loadedImages = {};
+    let imagesReady = false;
+
+    // Estados del juego mejorados
+    let arrows = [];
+    let keysPressed = {};
+    let score = 0;
+    let misses = 0;
+    let totalNotes = 0;
+    let hitNotes = 0;
+    let gameOver = false;
+    let gameInterval;
+    let difficultyInterval;
+    let arrowSpeed = 3; // Velocidad inicial ligeramente mayor
+    let gameLoopId;
+    let combo = 0;
+    let maxCombo = 0;
+
+    const keyMap = {
+      "ArrowLeft": "left", 
+      "ArrowRight": "right", 
+      "ArrowUp": "up",
+      "ArrowDown": "down", 
+      " ": "space"
+    };
+
+    // Personaje Yeyo (usando el elemento HTML del GIF)
+    const dancer = { 
+      dancing: false,
+      danceIntensity: 0
+    };
+
+    // --- Sistema de puntuación mejorado ---
+    const scoreSystem = {
+      perfect: 200,   // Hit exacto en la línea
+      good: 100,     // Hit cerca de la línea
+      ok: 50,        // Hit lejano pero válido
+      miss: 0        // Miss
+    };
+
+    // --- Carga imágenes ---
+    function loadImages() {
+      let loaded = 0;
+      const keys = Object.keys(arrowImagesSrc);
+      keys.forEach(k => {
+        const img = new Image();
+        img.src = arrowImagesSrc[k];
+        img.onload = () => {
+          loadedImages[k] = img;
+          loaded++;
+          if (loaded === keys.length) {
+            imagesReady = true;
+            playBtn.disabled = false;
+            playBtn.textContent = "▶ Play";
+          }
+        };
+        img.onerror = showError;
+      });
+    }
+    loadImages();
+
+    // --- Dibujos mejorados ---
+    function drawLanes() {
+      // Carriles con gradiente sutil
+      for (let i = 0; i < laneCount; i++) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, i % 2 === 0 ? "#2a2a33" : "#25252d");
+        gradient.addColorStop(1, i % 2 === 0 ? "#1f1f28" : "#1a1a22");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(i * laneWidth, 0, laneWidth, canvas.height);
+      }
+      
+      // Etiquetas de teclas
+      ctx.fillStyle = "#ddd";
+      ctx.font = "16px 'Press Start 2P'";
+      const labels = ["←","↑","↓","→","⎵"];
+      for (let i = 0; i < laneCount; i++) {
+        const x = i * laneWidth + laneWidth/2;
+        const metrics = ctx.measureText(labels[i]);
+        ctx.fillText(labels[i], x - metrics.width/2, 35);
+      }
+      
+      // Línea de hit más visible con efecto brillante
+      const hitGradient = ctx.createLinearGradient(0, hitLineY-10, 0, hitLineY+10);
+      hitGradient.addColorStop(0, "rgba(158, 240, 26, 0.3)");
+      hitGradient.addColorStop(0.5, "rgba(255, 255, 255, 1)");
+      hitGradient.addColorStop(1, "rgba(158, 240, 26, 0.3)");
+      ctx.fillStyle = hitGradient;
+      ctx.fillRect(0, hitLineY-2, canvas.width, 6);
+    }
+
+    function drawArrow(a) {
+      if (loadedImages[a.dir]) {
+        // Efecto de transparencia cuando se acerca a la línea de hit
+        const distanceToHit = Math.abs(a.y - hitLineY);
+        let alpha = 1;
+        if (distanceToHit < 30) {
+          alpha = 0.7 + 0.3 * Math.sin(Date.now() * 0.01);
+        }
+        
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(loadedImages[a.dir], a.x, a.y, 60, 60);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function drawDancer() {
+      // Yeyo ahora se maneja como elemento HTML, no en canvas
+      if (dancer.dancing) {
+        const wobble = Math.sin(Date.now() * 0.02) * (10 + dancer.danceIntensity);
+        const bounce = Math.abs(Math.sin(Date.now() * 0.03)) * 5;
+        yeyoGif.style.transform = `translateX(calc(-50% + ${wobble}px)) translateY(-${bounce}px)`;
+      } else {
+        yeyoGif.style.transform = 'translateX(-50%) translateY(0)';
+      }
+    }
+
+    function drawHUD() {
+      // Score con efecto brillante
+      ctx.fillStyle = "#ffd166";
+      ctx.font = "16px 'Press Start 2P'";
+      ctx.fillText("Score: " + score, 14, 50);
+      
+      // Combo counter
+      if (combo > 1) {
+        ctx.fillStyle = "#9ef01a";
+        ctx.fillText("Combo: " + combo, 14, 75);
+      }
+      
+      // Errores con colores dinámicos
+      ctx.fillStyle = misses < 2 ? "#4ade80" : (misses === 2 ? "#fbbf24" : "#ef4444");
+      ctx.fillText("Errores: " + misses + "/3", canvas.width - 220, 50);
+      
+      // Precisión en tiempo real
+      const accuracy = totalNotes > 0 ? Math.round((hitNotes / totalNotes) * 100) : 100;
+      ctx.fillStyle = "#a78bfa";
+      ctx.fillText("Precisión: " + accuracy + "%", canvas.width - 220, 75);
+    }
+
+    // --- Efectos visuales ---
+    function createHitEffect(x, y, scoreType) {
+      const effect = document.createElement('div');
+      effect.className = 'hit-effect';
+      effect.style.left = x + 'px';
+      effect.style.top = y + 'px';
+      
+      let text = '';
+      switch(scoreType) {
+        case 'perfect': text = 'PERFECT! +' + scoreSystem.perfect; break;
+        case 'good': text = 'GOOD! +' + scoreSystem.good; break;
+        case 'ok': text = 'OK +' + scoreSystem.ok; break;
+        default: text = 'MISS';
+      }
+      
+      effect.textContent = text;
+      document.getElementById('gameWrapper').appendChild(effect);
+      
+      setTimeout(() => effect.remove(), 500);
+    }
+
+    // --- Lógica de juego mejorada ---
+    function resetGame() {
+      arrows = [];
+      score = 0;
+      misses = 0;
+      totalNotes = 0;
+      hitNotes = 0;
+      combo = 0;
+      maxCombo = 0;
+      gameOver = false;
+      arrowSpeed = 3;
+      keysPressed = {};
+      dancer.danceIntensity = 0;
+      clearInterval(gameInterval);
+      clearInterval(difficultyInterval);
+      cancelAnimationFrame(gameLoopId);
+    }
+
+    function startGame() {
+      if (!imagesReady) { showError(); return; }
+      startScreen.style.display = "none";
+      endModal.style.display = "none";
+      errorScreen.style.display = "none";
+      canvas.style.display = "block";
+      yeyoGif.style.display = "block"; // Mostrar Yeyo cuando inicia el juego
+
+      resetGame();
+
+      music.currentTime = 0;
+      music.volume = volumeControl.value;
+      music.play().catch(e => console.log("Audio play failed:", e));
+
+      // Generar flechas con mejor timing
+      gameInterval = setInterval(() => {
+        if (!gameOver) { // Solo generar si el juego sigue activo
+          const laneIndex = Math.floor(Math.random() * laneCount);
+          const dir = lanes[laneIndex];
+          const x = laneIndex * laneWidth + (laneWidth - 60) / 2;
+          arrows.push({ dir, y: -60, x, missed: false });
+          totalNotes++;
+        }
+      }, 1000); // Frecuencia más consistente
+
+      // Incremento de dificultad más gradual
+      difficultyInterval = setInterval(() => { 
+        if (!gameOver && arrowSpeed < 6) arrowSpeed += 0.2; 
+      }, 8000);
+
+      gameLoopId = requestAnimationFrame(gameLoop);
+    }
+
+    function checkHit(dir) {
+      let bestHit = null;
+      let bestDistance = Infinity;
+      let bestIndex = -1;
+
+      // Buscar la flecha más cercana a la línea de hit
+      for (let i = 0; i < arrows.length; i++) {
+        const a = arrows[i];
+        if (a.dir === dir && !a.missed) {
+          const distance = Math.abs(a.y + 30 - hitLineY); // +30 para el centro de la flecha
+          if (distance < bestDistance && distance < 80) { // Zona de hit más generosa
+            bestDistance = distance;
+            bestHit = a;
+            bestIndex = i;
+          }
+        }
+      }
+
+      if (bestHit) {
+        arrows.splice(bestIndex, 1);
+        hitNotes++;
+        combo++;
+        maxCombo = Math.max(maxCombo, combo);
+
+        // Sistema de puntuación basado en precisión
+        let scoreType = 'ok';
+        let points = scoreSystem.ok;
+        
+        if (bestDistance < 15) {
+          scoreType = 'perfect';
+          points = scoreSystem.perfect;
+        } else if (bestDistance < 35) {
+          scoreType = 'good';
+          points = scoreSystem.good;
+        }
+
+        // Bonus por combo
+        const comboMultiplier = Math.min(1 + (combo - 1) * 0.1, 2);
+        points = Math.floor(points * comboMultiplier);
+        
+        score += points;
+
+        // Efectos visuales y de baile
+        createHitEffect(bestHit.x + 30, bestHit.y + 30, scoreType);
+        dancer.dancing = true;
+        dancer.danceIntensity = Math.min(combo * 2, 20);
+        
+        setTimeout(() => {
+          dancer.dancing = false;
+          dancer.danceIntensity = 0;
+        }, 400);
+
+      } else {
+        // Miss
+        combo = 0;
+        misses++;
+        createHitEffect(canvas.width/2, hitLineY, 'miss');
+        if (misses >= 3) endGame(false);
+      }
+    }
+
+    function gameLoop() {
+      if (gameOver) return;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawLanes();
+      
+      // Actualizar y dibujar flechas
+      for (let i = arrows.length - 1; i >= 0; i--) {
+        const a = arrows[i];
+        a.y += arrowSpeed;
+        drawArrow(a);
+        
+        // Marcar como perdida si pasa demasiado la línea
+        if (a.y > hitLineY + 50 && !a.missed) {
+          a.missed = true;
+          misses++;
+          combo = 0;
+          if (misses >= 3) { 
+            endGame(false); 
+            return; 
+          }
+        }
+        
+        // Eliminar flechas que salen de pantalla
+        if (a.y > canvas.height + 60) {
+          arrows.splice(i, 1);
+        }
+      }
+      
+      drawHUD();
+      drawDancer();
+      gameLoopId = requestAnimationFrame(gameLoop);
+    }
+
+    function endGame(win = true) {
+      gameOver = true;
+      clearInterval(gameInterval);
+      clearInterval(difficultyInterval);
+      cancelAnimationFrame(gameLoopId);
+      music.pause();
+      yeyoGif.style.display = "none"; // Ocultar Yeyo cuando termina el juego
+      
+      canvas.style.display = "none";
+      endModal.style.display = "flex";
+      
+      const accuracy = totalNotes > 0 ? Math.round((hitNotes / totalNotes) * 100) : 0;
+      finalScoreDisplay.innerText = "Puntaje: " + score;
+      accuracyDisplay.innerText = `Precisión: ${accuracy}% | Max Combo: ${maxCombo}`;
+      endMessage.innerText = win ? "¡Canción Completada!" : "¡Inténtalo de nuevo!";
+    }
+
+    function goHome() {
+      startScreen.style.display = "flex";
+      endModal.style.display = "none";
+      errorScreen.style.display = "none";
+      canvas.style.display = "none";
+      yeyoGif.style.display = "none"; // Ocultar Yeyo en la pantalla de inicio
+      resetGame();
+    }
+
+    function showError() {
+      startScreen.style.display = "none";
+      errorScreen.style.display = "flex";
+      canvas.style.display = "none";
+      yeyoGif.style.display = "none"; // Ocultar Yeyo en pantalla de error
+    }
+
+    // --- Eventos mejorados ---
+    document.addEventListener("keydown", e => {
+      if (gameOver || !keyMap[e.key]) return;
+      e.preventDefault(); // Prevenir comportamiento por defecto
+      
+      if (!keysPressed[keyMap[e.key]]) {
+        keysPressed[keyMap[e.key]] = true;
+        checkHit(keyMap[e.key]);
+      }
+    });
+
+    document.addEventListener("keyup", e => { 
+      if (keyMap[e.key]) {
+        keysPressed[keyMap[e.key]] = false; 
+      }
+    });
+
+    playBtn.addEventListener("click", startGame);
+    restartBtn.addEventListener("click", startGame);
+    homeBtn.addEventListener("click", goHome);
+    errorHomeBtn.addEventListener("click", goHome);
+    volumeControl.addEventListener("input", () => { music.volume = volumeControl.value; });
+    music.addEventListener("ended", () => { if (!gameOver) endGame(true); });
+
+    // Prevenir scroll con flechas
+    window.addEventListener("keydown", function(e) {
+      if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+      }
+    }, false);
+  </script>
+</body>
+</html>
