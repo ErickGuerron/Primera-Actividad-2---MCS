@@ -1,6 +1,8 @@
 import { Code, User, Joystick, Heart, Lightbulb } from "lucide-react"; // Importa iconos adicionales
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { StarBackground } from "@/components/StarBackground";
+import { Navbar } from "@/components/Navbar";
+import ImagenErick from "./erick.jpg";
 import "./GameEmbed.css";
 export const AboutErick = () => {
     return (
@@ -25,7 +27,7 @@ export const AboutErick = () => {
                             <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary shadow-lg card-hover">
                                 {/* Reemplaza con tu imagen */}
                                 <img
-                                    src="https://via.placeholder.com/192" // URL de tu foto personal
+                                    src={ImagenErick} // URL de tu foto personal
                                     alt="Foto de perfil"
                                     className="w-full h-full object-cover"
                                 />
@@ -165,7 +167,12 @@ export const AboutErick = () => {
                                     <div className="aspect-video w-full rounded-md overflow-hidden bg-gray-800 flex items-center justify-center game-embed">
                                         {/* Reemplaza este iframe con el código para incrustar tu juego.
                         Puede ser de itch.io, GitHub Pages, o cualquier otra plataforma. */}
-                                        <iframe frameBorder="0" src="https://itch.io/embed-upload/13627977?color=333333" allowfullscreen allow="autoplay; fullscreen; gamepad; xr-spatial-tracking"><a href="https://littlepuppet.itch.io/worldwar-3-2099">Play WorldWar 3 2099 on itch.io</a></iframe>
+                                        <iframe 
+                                            frameBorder="0" 
+                                            src="https://itch.io/embed-upload/12440637?color=333333" 
+                                            allowfullscreen allow="autoplay; fullscreen; gamepad; xr-spatial-tracking">
+                                                <a href="https://littlepuppet.itch.io/worldwar-3-2099">Play Little Puppet on itch.io</a>
+                                        </iframe>
                                         {/* Si no tienes un iframe, puedes poner un enlace a tu juego aquí: */}
                                         {/* <a href="https://tu-juego.com" target="_blank" rel="noopener noreferrer" className="cosmic-button text-sm">
                       Jugar Ahora
