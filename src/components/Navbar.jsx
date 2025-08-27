@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils";
+ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import Logo from "../assets/LogoBlanco.png"; // 👈 importa tu logo
 
 const navItems = [
   { name: "Home", href: "#hero" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
+  { name: "Equipo", href: "#team" },
+  { name: "Proyectos", href: "#projects" },
+  { name: "Contáctanos", href: "#contact" },
 ];
 
 export const Navbar = () => {
@@ -16,31 +16,31 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.screenY > 10);
+      setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   return (
     <nav
       className={cn(
-        "fixed w-full z-40 transition-all duration-300",
-        isScrolled ? "py-3 bg-background/80 backdrop-blur-md shadow-xs" : "py-5"
+        "fixed w-full z-50 transition-all duration-300",
+        isScrolled ? "py-3 bg-black/70 backdrop-blur-md shadow-md" : "py-5"
       )}
     >
       <div className="container flex items-center justify-between">
-        <a
-          className="text-xl font-bold text-primary flex items-center"
-          href="#hero"
-        >
-          <span className="relative z-10">
-            <span className="text-glow text-foreground"> PedroTech </span>{" "}
-            Portfolio
-          </span>
+        {/* LOGO */}
+        <a href="#hero" className="flex items-center space-x-2">
+          <img
+            src={Logo}
+            alt="DevStorm Logo"
+            className="h-16 w-auto"
+          />
+          <span className="text-xl font-bold text-primary">DevStorm</span>
         </a>
 
-        {/* desktop nav */}
+        {/* DESKTOP NAV */}
         <div className="hidden md:flex space-x-8">
           {navItems.map((item, key) => (
             <a
@@ -53,31 +53,29 @@ export const Navbar = () => {
           ))}
         </div>
 
-        {/* mobile nav */}
-
+        {/* MOBILE TOGGLE */}
         <button
           onClick={() => setIsMenuOpen((prev) => !prev)}
           className="md:hidden p-2 text-foreground z-50"
           aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}{" "}
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
+        {/* MOBILE MENU */}
         <div
           className={cn(
-            "fixed inset-0 bg-background/95 backdroup-blur-md z-40 flex flex-col items-center justify-center",
-            "transition-all duration-300 md:hidden",
-            isMenuOpen
-              ? "opacity-100 pointer-events-auto"
-              : "opacity-0 pointer-events-none"
+            "fixed top-0 left-0 w-full h-full bg-black/90 backdrop-blur-md z-40 flex flex-col items-center justify-center",
+            "transition-transform duration-500 md:hidden",
+            isMenuOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
-          <div className="flex flex-col space-y-8 text-xl">
+          <div className="flex flex-col space-y-8 text-2xl font-semibold">
             {navItems.map((item, key) => (
               <a
                 key={key}
                 href={item.href}
-                className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                className="text-white hover:text-primary transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
