@@ -1,6 +1,5 @@
 import { ArrowDown } from "lucide-react";
-Import 
-import TeamImage from "../assets/team-photo.png"; // tu foto grupal aquí
+import TeamImage from "../assets/team-photo.png"; 
 
 export const HeroSection = () => {
   return (
