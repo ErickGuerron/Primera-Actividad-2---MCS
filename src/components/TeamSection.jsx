@@ -8,7 +8,7 @@ export const TeamSection = () => {
     { name: "Anthony", role: "Fullstack Developer", image: "https://via.placeholder.com/200", route: "/aboutAnthony" },
     { name: "Erick", role: "Fullstack Developer", image: "https://via.placeholder.com/200", route: "/aboutErick" },
     { name: "Ana", role: "UI/UX Designer", image: "https://via.placeholder.com/200", route: "/aboutMabe" },
-    { name: "Luis", role: "Backend Developer", image: "https://via.placeholder.com/200", route: "/aboutErick" },
+    { name: "Santiago", role: "Backend Developer", image: "https://via.placeholder.com/200", route: "/aboutSantiago" },
     { name: "Mabe", role: "Frontend Developer", image: MabeImage, route: "/aboutMabe" },
     { name: "Carlos", role: "DevOps Engineer", image: "https://via.placeholder.com/200", route: "/aboutErick" },
   ];

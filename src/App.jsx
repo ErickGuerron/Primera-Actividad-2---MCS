@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { AboutSection } from "./pages/mabe/AboutMe";
 import { AboutErick } from "./pages/erick/AboutMe";
 import { AboutAnthony } from "./pages/anthony/AboutMe"; 
+import { AboutSantiago } from "./pages/santiago/AboutMe";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/aboutMabe" element={<AboutSection />} />
           <Route path="/aboutErick" element={<AboutErick />} />
            <Route path="/aboutAnthony" element={<AboutAnthony />} />
+          <Route path="/aboutSantiago" element={<AboutSantiago />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
