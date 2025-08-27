@@ -1,0 +1,15 @@
+.game-embed {
+  position: relative;
+  width: 100%;          /* ocupa todo el ancho disponible del padre */
+  aspect-ratio: 16/9;   /* mantiene la relación 16:9 */
+  border-radius: 10px;  /* opcional: bordes redondeados */
+  overflow: hidden;
+}
+
+.game-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
