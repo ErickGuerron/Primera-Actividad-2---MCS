@@ -2,7 +2,6 @@ import { Briefcase, Code, User, Joystick, Heart, Lightbulb } from "lucide-react"
 import { Navbar } from "../../components/Navbar";
 export const AboutSection = () => {
   return (
-   <Navbar />
 
     <section id="about" className="py-24 px-4 relative">
       <div className="container mx-auto max-w-5xl">
