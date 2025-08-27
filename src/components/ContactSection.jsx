@@ -1,4 +1,4 @@
-import {
+ import {
   Instagram,
   Linkedin,
   Mail,
@@ -18,154 +18,121 @@ export const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setIsSubmitting(true);
 
     setTimeout(() => {
       toast({
-        title: "Message sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
+        title: "Mensaje enviado!",
+        description: "Gracias por tu mensaje. Nos pondremos en contacto pronto.",
       });
       setIsSubmitting(false);
     }, 1500);
   };
+
   return (
-    <section id="contact" className="py-24 px-4 relative bg-secondary/30">
-      <div className="container mx-auto max-w-5xl">
+    <section id="contact" className="py-24 px-4 relative bg-gradient-to-b from-gray-900/5 to-transparent">
+      <div className="container mx-auto max-w-6xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-          Get In <span className="text-primary"> Touch</span>
+          Contáctanos en <span className="text-primary">DevStorm</span>
         </h2>
 
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Have a project in mind or want to collaborate? Feel free to reach out.
-          I'm always open to discussing new opportunities.
+        <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+          ¿Tienes un proyecto en mente o quieres colaborar con nuestro equipo? 
+          Estamos abiertos a nuevas ideas y oportunidades.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="space-y-8">
-            <h3 className="text-2xl font-semibold mb-6">
-              {" "}
-              Contact Information
-            </h3>
+          {/* Información de contacto */}
+          <div className="space-y-10">
+            <h3 className="text-2xl font-semibold mb-6">Información de Contacto</h3>
 
-            <div className="space-y-6 justify-center">
-              <div className="flex items-start space-x-4">
-                <div className="p-3 rounded-full bg-primary/10">
-                  <Mail className="h-6 w-6 text-primary" />{" "}
+            <div className="space-y-6">
+              {[
+                { icon: <Mail className="h-6 w-6 text-white" />, title: "Email", value: "contact@devstorm.com", href: "mailto:contact@devstorm.com" },
+                { icon: <Phone className="h-6 w-6 text-white" />, title: "Teléfono", value: "+593 987 654 321", href: "tel:+593987654321" },
+                { icon: <MapPin className="h-6 w-6 text-white" />, title: "Ubicación", value: "Quito, Ecuador" },
+              ].map((info, idx) => (
+                <div key={idx} className="flex items-start gap-4">
+                  <div className="p-3 rounded-full bg-gradient-to-tr from-primary to-secondary shadow-md">
+                    {info.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-white">{info.title}</h4>
+                    {info.href ? (
+                      <a
+                        href={info.href}
+                        className="text-gray-300 hover:text-primary transition-colors"
+                      >
+                        {info.value}
+                      </a>
+                    ) : (
+                      <span className="text-gray-300">{info.value}</span>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium"> Email</h4>
-                  <a
-                    href="mailto:hello@gmail.com"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    hello@gmail.com
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <div className="p-3 rounded-full bg-primary/10">
-                  <Phone className="h-6 w-6 text-primary" />{" "}
-                </div>
-                <div>
-                  <h4 className="font-medium"> Phone</h4>
-                  <a
-                    href="tel:+11234567890"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    +1 (123) 456-7890
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <div className="p-3 rounded-full bg-primary/10">
-                  <MapPin className="h-6 w-6 text-primary" />{" "}
-                </div>
-                <div>
-                  <h4 className="font-medium"> Location</h4>
-                  <a className="text-muted-foreground hover:text-primary transition-colors">
-                    Vancouver, BC, Canada
-                  </a>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="pt-8">
-              <h4 className="font-medium mb-4"> Connect With Me</h4>
-              <div className="flex space-x-4 justify-center">
-                <a href="#" target="_blank">
-                  <Linkedin />
-                </a>
-                <a href="#" target="_blank">
-                  <Twitter />
-                </a>
-                <a href="#" target="_blank">
-                  <Instagram />
-                </a>
-                <a href="#" target="_blank">
-                  <Twitch />
-                </a>
+              <h4 className="font-medium mb-4 text-white">Conéctate con Nosotros</h4>
+              <div className="flex space-x-4 justify-center md:justify-start">
+                {[Linkedin, Twitter, Instagram, Twitch].map((Icon, idx) => (
+                  <a
+                    key={idx}
+                    href="#"
+                    target="_blank"
+                    className="p-3 rounded-full bg-gray-800/40 hover:bg-gradient-to-tr from-primary to-secondary transition-colors shadow-md hover:shadow-xl"
+                  >
+                    <Icon className="h-5 w-5 text-white" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
 
-          <div
-            className="bg-card p-8 rounded-lg shadow-xs"
-            onSubmit={handleSubmit}
-          >
-            <h3 className="text-2xl font-semibold mb-6"> Send a Message</h3>
+          {/* Formulario de contacto */}
+          <div className="bg-gray-800/40 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <h3 className="text-2xl font-semibold mb-6 text-white">Envíanos un Mensaje</h3>
 
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium mb-2"
-                >
-                  {" "}
-                  Your Name
+                <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-200">
+                  Tu Nombre
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   required
-                  className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden foucs:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400"
                   placeholder="Pedro Machado..."
                 />
               </div>
 
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium mb-2"
-                >
-                  {" "}
-                  Your Email
+                <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-200">
+                  Tu Email
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden foucs:ring-2 focus:ring-primary"
-                  placeholder="john@gmail.com"
+                  className="w-full px-4 py-3 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400"
+                  placeholder="correo@ejemplo.com"
                 />
               </div>
 
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium mb-2"
-                >
-                  {" "}
-                  Your Message
+                <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-200">
+                  Tu Mensaje
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
-                  className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden foucs:ring-2 focus:ring-primary resize-none"
-                  placeholder="Hello, I'd like to talk about..."
+                  className="w-full px-4 py-3 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400 resize-none"
+                  placeholder="Hola, me gustaría hablar sobre..."
                 />
               </div>
 
@@ -173,10 +140,10 @@ export const ContactSection = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className={cn(
-                  "cosmic-button w-full flex items-center justify-center gap-2"
+                  "cosmic-button w-full flex items-center justify-center gap-2 px-6 py-3 font-semibold text-white bg-primary rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 )}
               >
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
                 <Send size={16} />
               </button>
             </form>

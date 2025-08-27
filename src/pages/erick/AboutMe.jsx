@@ -4,8 +4,9 @@ import { StarBackground } from "@/components/StarBackground";
 import "./GameEmbed.css";
 export const AboutErick = () => {
     return (
-
-        <section id="about" className="py-24 px-4 relative">
+        <>
+            <Navbar />
+            <section id="about" className="py-24 px-4 relative">
             {/* Theme Toggle */}
             <ThemeToggle />
             {/* Background Effects */}
@@ -177,5 +178,6 @@ export const AboutErick = () => {
                 </div>
             </div>
         </section>
+        </>
     );
 };
