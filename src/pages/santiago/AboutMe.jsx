@@ -2,17 +2,16 @@
 import { Code, User, Joystick, Heart, Music, Activity, Lightbulb } from "lucide-react";
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { StarBackground } from "@/components/StarBackground";
-import {Navbar} from "@/components/Navbar";
-
+import { Navbar } from "../../components/Navbar";
+import SaImage from "./santiago.png";
 
 export const AboutSantiago = () => {
   return (
-        <><Navbar /><section id="about" className="relative py-2 px-4 bg-gray-900 text-white min-h-screen">
-
-
-          {/* Theme Toggle y fondo de estrellas */}
-          <ThemeToggle />
-          <StarBackground />
+        <>
+            <Navbar />
+            <section id="about" className="py-24 px-4 relative">
+              <ThemeToggle />
+              <StarBackground />
 
           <div className="container mx-auto max-w-6xl pt-28">
               <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
@@ -25,7 +24,7 @@ export const AboutSantiago = () => {
                       <div className="flex justify-center mb-6">
                           <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary shadow-lg card-hover">
                               <img
-                                  src="https://via.placeholder.com/192"
+                                  src={SaImage}
                                   alt="Foto de perfil"
                                   className="w-full h-full object-cover" />
                           </div>
@@ -35,7 +34,7 @@ export const AboutSantiago = () => {
                           Desarrollador Backend En Proceso
                       </h3>
 
-                      <p className="text-gray-300 text-center md:text-left">
+                      <p className="text-muted-foreground text-center md:text-left">
                           Soy un desarrollador backend, aunque aun me queda un largo camino por recorrer quiero adquirir todos
                           los conocimientos que pueda ya sea en la universidad o por otros medios y asi seguir con la creacion
                           de mis proyectos o apoyar en la creacion de otros. 
@@ -50,11 +49,11 @@ export const AboutSantiago = () => {
                               </div>
                               <div className="text-left">
                                   <h4 className="font-semibold text-lg">Mis Hobbies</h4>
-                                  <p className="text-gray-300">
+                                  <p className="text-muted-foreground">
                                     Tengo diversos tipos de hobbies aunque para mis los mas importantes y los cuales los realizo a diario serian:
                                     escuchar todo tipo de musica ya que me ayuda a realizar cualquier otra actividad con energia y pasion, tambien
-                                    esta el de jugar distintos videojuegos que puedan brindarme horas de diversion y por ultimo seria el de ver series
-                                    de television o anime.
+                                    esta el de jugar distintos videojuegos que puedan brindarme horas de diversion y por ultimo seria el de ver 
+                                    distintos partidos de futbol de cualquier parte del mundo.
                                   </p>
                               </div>
                           </div>
@@ -67,7 +66,7 @@ export const AboutSantiago = () => {
                               </div>
                               <div className="text-left">
                                   <h4 className="font-semibold text-lg">Futuro</h4>
-                                  <p className="text-gray-300">
+                                  <p className="text-muted-foreground">
                                     Para el futuro y mediante se desarrolle la carrera quiero enfocarme principalmente en el desarrollo
                                     web aunque tambien me llama la antencion el ambito de la ciberseguridad para lo cual he decidido no
                                     descuidar mis estudios y enfocarme 100% en lo que me apasiona.
@@ -99,7 +98,7 @@ export const AboutSantiago = () => {
                               </div>
                               <div className="text-left">
                                   <h4 className="font-semibold text-lg">Habilidades Clave</h4>
-                                  <ul className="list-disc list-inside text-gray-300 pl-4">
+                                  <ul className="list-disc list-inside text-muted-foreground pl-4">
                                       <li>Frontend: React, HTML, CSS, JavaScript</li>
                                       <li>Backend: Node.js, Nest.js, Express</li>
                                       <li>Bases de Datos: PostgreSQL, MySQL</li>
@@ -117,7 +116,7 @@ export const AboutSantiago = () => {
                               </div>
                               <div className="text-left">
                                   <h4 className="font-semibold text-lg">Experiencia</h4>
-                                  <p className="text-gray-300">
+                                  <p className="text-muted-foreground">
                                     Tengo distinta experiencia en proyectos a mediana escala o diferentes tareas pequeñas que incluyan 
                                     desarrollo web ya sea en solitario o en grupos de trabajo.
                                   </p>
@@ -133,8 +132,10 @@ export const AboutSantiago = () => {
                               </div>
                               <div className="text-left w-full">
                                   <h4 className="font-semibold text-lg mb-2">Mi Juego Desarrollado</h4>
-                                  <p className="text-gray-300 mb-4">
-                                      Este proyecto de juego demuestra mis habilidades en desarrollo interactivo, lógica de programación y diseño de experiencias divertidas y envolventes.
+                                 <p className="text-muted-foreground">
+                                    El juego que yo he desarrollado es un clasico pegale al topo solo que incorporo escudos de clubes
+                                    como si fueran los topos asi combinando mi carrera conjuntamente con mis hobbies que eran la musica,
+                                    los videojuegos y el futbol.
                                   </p>
                                   <div className="w-full max-w-xl mx-auto aspect-[9/16] rounded-md overflow-hidden bg-gray-900 shadow-lg">
                                     <iframe

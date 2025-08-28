@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Whack-a-Club</title>
+  <title>Whack-a-Teams</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -115,16 +115,60 @@
       background: #45a049;
     }
 
+    #startMenu {
+  position: fixed;
+  inset: 0; /* top, right, bottom, left = 0 */
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+#startMenu.hidden {
+  display: none;
+}
+
+#startMenu .overlay {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+}
+
+#startMenu .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+#startMenu .timeBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#startMenu .timeBtn:hover {
+  background: #45a049;
+}
+
+
   </style>
 </head>
 <body>
     
 
-  <h1>Whack-a-Club</h1>
+  <h1>Whack-a-Teams</h1>
   <div id="scoreboard">
     ⏱ Time: <span id="time">30</span>s | 🎯 Score: <span id="score">0</span>
   </div>
-  <button id="startBtn">Start Game</button>
+  
 
   <div id="game">
     <div class="hole"><div class="mole"></div></div>
@@ -137,6 +181,18 @@
     <div class="hole"><div class="mole"></div></div>
     <div class="hole"><div class="mole"></div></div>
   </div>
+
+  <div id="startMenu">
+  <div class="overlay">
+    <h2>Select Game Time</h2>
+    <div class="buttons">
+      <button class="timeBtn" data-time="30">30 Seconds</button>
+      <button class="timeBtn" data-time="60">1 Minute</button>
+      <button class="timeBtn" data-time="120">2 Minutes</button>
+    </div>
+  </div>
+</div>
+
 
   <div id="gameOver" class="hidden">
     <div class="overlay">
@@ -151,6 +207,13 @@
     const scoreBoard = document.getElementById('score');
     const timeBoard = document.getElementById('time');
     const startBtn = document.getElementById('startBtn');
+    const hitSound = new Audio("sounds/hit.mp3");
+    const bgMusic = new Audio("sounds/sound.mp3");
+    const timeButtons = document.querySelectorAll(".timeBtn");
+    let gameDuration = 30; // valor por defecto
+    bgMusic.loop = true;   // que se repita
+    bgMusic.volume = 0.2;  // volumen (0.0 a 1.0)
+
     const moleImages = [
         "images/mole1.png",
         "images/mole2.png",
@@ -182,7 +245,7 @@
     }
 
     function peep() {
-      const time = randomTime(500, 1200);
+      const time = randomTime(600, 800);
       const mole = randomHole();
       mole.classList.add('up');
        const randomImage = moleImages[Math.floor(Math.random() * moleImages.length)];
@@ -192,15 +255,28 @@
         if (!timeUp) peep();
       }, time);
     }
+timeButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    gameDuration = parseInt(btn.dataset.time);
+    startGame();
+    document.getElementById("startMenu").classList.add("hidden");
+  });
+});
 
-    function startGame() {
+function startGame() {
   score = 0;
   scoreBoard.textContent = score;
-  timeLeft = 30;
+  timeLeft = gameDuration;
   timeBoard.textContent = timeLeft;
   timeUp = false;
 
   document.getElementById("gameOver").classList.add("hidden");
+
+  // música de fondo si la tienes
+  if (bgMusic) {
+    bgMusic.currentTime = 0;
+    bgMusic.play();
+  }
 
   peep();
 
@@ -216,7 +292,8 @@
 }
 
 function endGame() {
-  document.body.classList.add("blur");
+  bgMusic.pause();
+  
   document.getElementById("finalScore").textContent = score;
   document.getElementById("gameOver").classList.remove("hidden");
 }
@@ -232,6 +309,8 @@ document.getElementById("restartBtn").addEventListener("click", () => {
         score++;
         this.classList.remove('up');
         scoreBoard.textContent = score;
+        hitSound.currentTime = 0; 
+        hitSound.play();
       }
     }
 
