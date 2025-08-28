@@ -2,6 +2,7 @@
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { StarBackground } from "@/components/StarBackground";
 import { Navbar } from "@/components/Navbar";
+import ProfilePic from "./Anthony.jpg";
 // pon tu foto real aquí
 import "./GameEmbed.css";
 
@@ -25,7 +26,7 @@ export const AboutAnthony = () => {
               <div className="flex justify-center mb-6">
                 <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary shadow-lg card-hover">
                   <img
-                    src={"https://avatars.githubusercontent.com/u/12345678?v=4"}
+                    src={ProfilePic}
                     alt="Foto de perfil"
                     className="w-full h-full object-cover"
                   />
