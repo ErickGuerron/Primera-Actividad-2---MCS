@@ -1,4 +1,4 @@
-import { useState } from "react";
+ import { useState } from "react";
 import {
   LineChart,
   Line,
@@ -21,8 +21,6 @@ export const ProjectRK4 = () => {
 
   const handleCalcular = () => {
     setResultados([]);
-
-    // Validación básica
     if (!funcion || !x0 || !y0 || !xf || !h) {
       toast.error("Todos los campos son obligatorios");
       return;
@@ -31,8 +29,8 @@ export const ProjectRK4 = () => {
     let f;
     try {
       f = new Function("x", "y", `return ${funcion}`);
-      f(0, 0); // prueba rápida
-    } catch (error) {
+      f(0, 0);
+    } catch {
       toast.error("Función inválida");
       return;
     }
@@ -63,17 +61,19 @@ export const ProjectRK4 = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-900 text-white rounded-lg shadow-lg max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Calculadora RK4</h2>
+    <div className="p-6 bg-gray-900 text-white rounded-lg shadow-lg max-w-5xl mx-auto w-full">
+      <h2 className="text-2xl font-bold mb-4 text-center md:text-left">
+        Calculadora RK4
+      </h2>
 
       {/* Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 mb-3">
         <input
           type="text"
           placeholder="Función dy/dx = f(x,y)"
           value={funcion}
           onChange={(e) => setFuncion(e.target.value)}
-          className="p-2 border border-white rounded bg-transparent text-white placeholder-white col-span-5"
+          className="p-2 border border-white rounded bg-transparent text-white placeholder-white col-span-1 sm:col-span-2 md:col-span-5"
         />
         <input
           type="number"
@@ -105,17 +105,19 @@ export const ProjectRK4 = () => {
         />
       </div>
 
-      <button
-        onClick={handleCalcular}
-        className="px-4 py-2 bg-primary text-black font-semibold rounded hover:bg-primary/80 transition-colors"
-      >
-        Calcular
-      </button>
+      <div className="flex justify-center md:justify-start mb-4">
+        <button
+          onClick={handleCalcular}
+          className="px-4 py-2 bg-primary text-black font-semibold rounded hover:bg-primary/80 transition-colors"
+        >
+          Calcular
+        </button>
+      </div>
 
       {/* Tabla */}
       {resultados.length > 0 && (
-        <div className="overflow-x-auto mt-6">
-          <table className="table-auto border-collapse border border-white w-full text-white">
+        <div className="overflow-x-auto mt-4">
+          <table className="table-auto border-collapse border border-white w-full text-white text-sm sm:text-base">
             <thead>
               <tr>
                 <th className="border border-white px-2 py-1">x</th>
@@ -136,19 +138,14 @@ export const ProjectRK4 = () => {
 
       {/* Gráfico */}
       {resultados.length > 0 && (
-        <div className="mt-6 h-64 w-full">
+        <div className="mt-6 w-full h-64 sm:h-80 md:h-96">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={resultados}>
               <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
               <XAxis dataKey="x" stroke="#fff" />
               <YAxis stroke="#fff" />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="y"
-                stroke="#0ea5e9"
-                strokeWidth={2}
-              />
+              <Tooltip contentStyle={{ backgroundColor: "#1f2937", borderRadius: "5px" }} />
+              <Line type="monotone" dataKey="y" stroke="#0ea5e9" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
