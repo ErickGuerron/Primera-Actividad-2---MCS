@@ -168,16 +168,10 @@ export const AboutAnthony = () => {
 
             {/* Botones finales */}
             <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 pt-6 justify-center">
-              <a href="#contact" className="cosmic-button">
+              <a href="https://www.facebook.com/Anthonypunina04?locale=es_LA" className="cosmic-button">
                 Contacto
               </a>
-              <a
-                href="/ruta/a/tu_cv.pdf"
-                download
-                className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
-              >
-                Descargar CV
-              </a>
+              
             </div>
           </div>
         </div>

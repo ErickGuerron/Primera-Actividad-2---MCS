@@ -12,7 +12,7 @@ const projects = [
     image: Seguro,
     tags: ["React", "NestJS", "MySQL", "REST API", "JWT"],
     demoUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://github.com/THONY43/Modelamiento.git",
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ const projects = [
     image: Edu,
     tags: ["PHP", "MySQL", "XAMPP", "Azure AD", "CRUD"],
     demoUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://github.com/THONY43/PFISEI.git",
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const projects = [
     image: Tamagotchi,
     tags: ["Unity", "C#", "Estructuras de Datos", "Matrices", "FSM"],
     demoUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://itch.io/embed-upload/12440637",
   },
 ];
 
@@ -88,16 +88,8 @@ export const ProjectsSection = () => {
                 </p>
 
                 <div className="flex justify-start items-center mt-4 space-x-4">
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-primary transition-colors duration-300"
-                    aria-label={`Ver demo de ${project.title}`}
-                    title="Ver demo"
-                  >
-                    <ExternalLink size={22} />
-                  </a>
+                
+                    
                   <a
                     href={project.githubUrl}
                     target="_blank"
@@ -119,7 +111,7 @@ export const ProjectsSection = () => {
             className="cosmic-button inline-flex items-center gap-3 px-8 py-3 font-semibold text-white bg-primary rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://github.com/machadop1407"
+            href="https://github.com/ErickGuerron"
           >
             Ver nuestro GitHub <ArrowRight size={20} />
           </a>
