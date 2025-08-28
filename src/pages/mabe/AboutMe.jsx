@@ -14,7 +14,7 @@ return (
 
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-          Sobre <span className="text-primary">Mí</span>
+          Sobre <span className="text-primary">Mabe</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">

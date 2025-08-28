@@ -30,7 +30,7 @@ export const AboutMateo = () => {
 
         <div className="container mx-auto max-w-5xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-            Hola, soy <span className="text-primary">Mateo!</span>
+          Sobre <span className="text-primary">Mateo</span>
           </h2>
 
           {/* Foto de Perfil */}
