@@ -72,19 +72,19 @@ const handleSubmit = (e) => {
       {
         icon: <Mail className="h-6 w-6 text-white" />,
         title: "Email",
-        value: "contact@devstorm.com",
-        href: "mailto:contact@devstorm.com",
+        value: "contact@gmail.com",
+        href: "mailto:devstorm@gmail.com",
       },
       {
         icon: <Phone className="h-6 w-6 text-white" />,
         title: "Teléfono",
-        value: "+593 987 654 321",
+        value: "+593 986 682 169",
         href: "tel:+593987654321",
       },
       {
         icon: <MapPin className="h-6 w-6 text-white" />,
         title: "Ubicación",
-        value: "Quito, Ecuador",
+        value: "Ambato, Ecuador",
       },
     ].map((info, idx) => (
       <div

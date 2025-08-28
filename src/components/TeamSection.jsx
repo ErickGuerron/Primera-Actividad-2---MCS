@@ -24,7 +24,7 @@ export const TeamSection = () => {
     <section id="team" className="py-24 px-6 relative bg-gradient-to-b from-secondary/5 via-secondary/20 to-secondary/5">
       <div className="container mx-auto max-w-7xl">
         <h2 className="text-2xl md:text-3xl font-extrabold mb-12 text-center">
-          Proyectos <span className="text-primary">Destacados</span>
+          Equipo de <span className="text-primary">Desarrollo</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
