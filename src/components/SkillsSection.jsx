@@ -1,4 +1,4 @@
- import { useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   SiHtml5,
@@ -7,17 +7,14 @@ import {
   SiReact,
   SiTypescript,
   SiTailwindcss,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiExpress,
-  SiMongodb,
-  SiPostgresql,
-  SiGraphql,
+  SiNodedotjs, // NestJS
+  SiMysql,
+  SiPython,
   SiGithub,
   SiDocker,
   SiFigma,
- 
 } from "react-icons/si";
+import { FaJava, FaMicrosoft, FaCode } from "react-icons/fa";
 
 const skills = [
   // Frontend
@@ -27,20 +24,19 @@ const skills = [
   { name: "React", level: 90, category: "frontend", icon: <SiReact size={24} /> },
   { name: "TypeScript", level: 85, category: "frontend", icon: <SiTypescript size={24} /> },
   { name: "Tailwind CSS", level: 90, category: "frontend", icon: <SiTailwindcss size={24} /> },
-  { name: "Next.js", level: 80, category: "frontend", icon: <SiNextdotjs size={24} /> },
 
   // Backend
-  { name: "Node.js", level: 85, category: "backend", icon: <SiNodedotjs size={24} /> },
-  { name: "Express", level: 80, category: "backend", icon: <SiExpress size={24} /> },
-  { name: "MongoDB", level: 75, category: "backend", icon: <SiMongodb size={24} /> },
-  { name: "PostgreSQL", level: 70, category: "backend", icon: <SiPostgresql size={24} /> },
-  { name: "GraphQL", level: 65, category: "backend", icon: <SiGraphql size={24} /> },
+  { name: "NestJS", level: 85, category: "backend", icon: <SiNodedotjs size={24} /> },
+  { name: "MySQL", level: 80, category: "backend", icon: <SiMysql size={24} /> },
+  { name: "Java", level: 80, category: "backend", icon: <FaJava size={24} /> },
+  { name: "Python", level: 75, category: "backend", icon: <SiPython size={24} /> },
+  { name: "C#", level: 70, category: "backend", icon: <FaMicrosoft size={24} /> },
+  { name: "MATLAB", level: 65, category: "backend", icon: <FaCode size={24} /> },
 
   // Tools
   { name: "Git/GitHub", level: 95, category: "tools", icon: <SiGithub size={24} /> },
   { name: "Docker", level: 75, category: "tools", icon: <SiDocker size={24} /> },
   { name: "Figma", level: 85, category: "tools", icon: <SiFigma size={24} /> },
-  
 ];
 
 const categories = ["all", "frontend", "backend", "tools"];
