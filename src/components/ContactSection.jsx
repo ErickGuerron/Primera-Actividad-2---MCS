@@ -72,7 +72,7 @@ const handleSubmit = (e) => {
       {
         icon: <Mail className="h-6 w-6 text-white" />,
         title: "Email",
-        value: "contact@gmail.com",
+        value: "devstorm@gmail.com",
         href: "mailto:devstorm@gmail.com",
       },
       {
