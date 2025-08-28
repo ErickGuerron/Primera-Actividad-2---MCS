@@ -1,17 +1,21 @@
 // Después (si, por ejemplo, usas 'Activity' en lugar de 'Football')
-import { Code, User, Joystick, Heart, Music, Activity, Lightbulb } from "lucide-react";
+"use client";
+import { Code, User, Joystick, Heart, Music, Activity, Lightbulb, X } from "lucide-react";
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { StarBackground } from "@/components/StarBackground";
 import { Navbar } from "../../components/Navbar";
 import SaImage from "./santiago.png";
+import { useState } from "react";
+
 
 export const AboutSantiago = () => {
-  return (
+  const [open, setOpen] = useState(false);
+    return (
         <>
             <Navbar />
             <section id="about" className="py-24 px-4 relative">
               <ThemeToggle />
-              <StarBackground />
+              <StarBackground /> 
 
           <div className="container mx-auto max-w-5xl">
               <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
@@ -75,18 +79,23 @@ export const AboutSantiago = () => {
                           </div>
                       </div>
 
-                      {/* Contacto y CV */}
-                      <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
-                          <a href="#contact" className="cosmic-button">Contacto</a>
-                          <a
-                              href="/ruta/a/tu_cv.pdf"
-                              download
-                              className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
-                          >
-                              Descargar CV
-                          </a>
-                      </div>
-                  </div>
+                      {/* Contacto y CV con modal */}
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+                        <button
+                        onClick={() => setOpen(true)}
+                        className="cosmic-button"
+                        >
+                        Contacto
+                        </button>
+                        <a
+                        href="/cv/cv_xabier.pdf"
+                        download
+                        className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
+                        >
+                        Descargar CV
+                        </a>
+                    </div>
+                </div>
 
                   {/* Columna derecha: habilidades y juego */}
                   <div className="grid grid-cols-1 gap-6">
@@ -137,7 +146,7 @@ export const AboutSantiago = () => {
                                     como si fueran los topos asi combinando mi carrera conjuntamente con mis hobbies que eran la musica,
                                     los videojuegos y el futbol.
                                   </p>
-                                  <div className="w-full max-w-xl mx-auto aspect-[9/16] rounded-md overflow-hidden bg-gray-900 shadow-lg">
+                                  <div className="w-full max-w-x mx-auto aspect-[9/16] rounded-md overflow-hidden bg-gray-900 shadow-lg">
                                     <iframe
                                         src="/juegoSantiago/whackAClub.html"  
                                         width="100%"
@@ -145,7 +154,7 @@ export const AboutSantiago = () => {
                                         frameBorder="0"
                                         allowFullScreen
                                         title="Whack-a-Club"
-                                        className="rounded-md"
+                                        className="rounded-lg"
                                     />
                                     </div>
                               </div>
@@ -155,6 +164,54 @@ export const AboutSantiago = () => {
                   </div>
               </div>
           </div>
-      </section></>
+      </section>
+      
+      {/* Modal de contacto */}
+      {open && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="gradient-border bg-card p-6 rounded-2xl shadow-xl relative max-w-md w-full card-hover">
+            {/* Botón cerrar */}
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-3 right-3 text-muted-foreground hover:text-primary"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            {/* Contenido modal */}
+            <h2 className="text-2xl font-bold mb-4 text-center">Contacto</h2>
+            <p className="text-muted-foreground text-center mb-6">
+              Aquí tienes mis formas de contactarme:
+            </p>
+
+            <div className="flex flex-col gap-3">
+              <a
+                href="mailto:smora9480@gmail.com"
+                className="cosmic-button text-center"
+              >
+                📧 Correo
+              </a>
+              <a
+                href="https://www.facebook.com/santio.mora"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cosmic-button text-center"
+              >
+                🌐 Facebook
+              </a>
+              <a
+                href="https://wa.me/593983507919"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cosmic-button text-center"
+              >
+                💬 WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      </>
   );
 };
