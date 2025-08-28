@@ -1,0 +1,45 @@
+/* Tarjeta/panel que contiene el juego: se ajusta a lo que ocupe el juego */
+.media-card {
+  display: flex;
+  justify-content: center;     /* centra el juego dentro del panel */
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Contenedor responsivo del itch: respeta 960x600 y escala hacia abajo */
+.itch-container {
+  width: 100%;
+  max-width: 960px;            /* no excede la resolución nativa */
+  aspect-ratio: 16 / 10;       /* 960x600 */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #111;            /* fondo mientras carga el iframe */
+}
+
+/* El iframe ocupa todo el contenedor responsivo */
+.itch-container iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* Altura mínima uniforme para tarjetas de texto */
+.card-equal {
+  min-height: 240px;           /* ajusta 220–280px si lo necesitas */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Ajuste adicional: compensa el "salto" visual */
+.right-col-fix {
+  margin-top: 12rem; /* = mt-10 en Tailwind. Ajusta el valor a tu preferencia */
+}
+
+/* En móviles muy pequeños, garantiza una altura mínima utilizable */
+@media (max-width: 380px) {
+  .itch-container {
+    min-height: 240px;
+  }
+}
