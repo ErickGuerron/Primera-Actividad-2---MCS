@@ -7,6 +7,7 @@ import { AboutErick } from "./pages/erick/AboutMe";
 import { AboutAnthony } from "./pages/anthony/AboutMe";
 import { AboutSantiago } from "./pages/santiago/AboutMe";
 import { AboutXabier } from "./pages/xabier/AboutMe";
+import { AboutMateo } from "./pages/mateo/AboutMe";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/aboutAnthony" element={<AboutAnthony />} />
           <Route path="/aboutSantiago" element={<AboutSantiago />} />
           <Route path="/aboutXabier" element={<AboutXabier />} />
+          <Route path="/aboutMateo" element={<AboutMateo />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
