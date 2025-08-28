@@ -13,7 +13,7 @@ export const AboutSantiago = () => {
               <ThemeToggle />
               <StarBackground />
 
-          <div className="container mx-auto max-w-6xl pt-28">
+          <div className="container mx-auto max-w-5xl">
               <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
                   Sobre <span className="text-primary">Santiago</span>
               </h2>
