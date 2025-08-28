@@ -71,10 +71,10 @@
     
     body.blur #game {
   filter: blur(5px);
-}
+  }
 
 
-    #gameOver {
+  #gameOver {
   position: fixed;
   inset: 0;               /* equivale a top:0; left:0; right:0; bottom:0 */
   width: 100%;
@@ -84,21 +84,21 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;           /* asegúrate que está por encima de todo */
-}
+  }
 
-#gameOver.hidden {
-  display: none;
-}
+  #gameOver.hidden {
+    display: none;
+  }
 
-#gameOver .overlay {
-  background: white;
-  padding: 40px 30px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0px 6px 12px rgba(0,0,0,0.4);
-  min-width: 280px;        /* ancho mínimo */
-  max-width: 90%;          /* responsivo */
-}
+  #gameOver .overlay {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 6px 12px rgba(0,0,0,0.4);
+    min-width: 280px;        /* ancho mínimo */
+    max-width: 90%;          /* responsivo */
+  }
 
 
     #restartBtn {
@@ -203,104 +203,104 @@
   </div>
 
   <script>
-    const moles = document.querySelectorAll('.mole');
-    const scoreBoard = document.getElementById('score');
-    const timeBoard = document.getElementById('time');
-    const startBtn = document.getElementById('startBtn');
-    const hitSound = new Audio("sounds/hit.mp3");
-    const bgMusic = new Audio("sounds/sound.mp3");
-    const timeButtons = document.querySelectorAll(".timeBtn");
-    let gameDuration = 30; // valor por defecto
-    bgMusic.loop = true;   // que se repita
-    bgMusic.volume = 0.2;  // volumen (0.0 a 1.0)
+        const moles = document.querySelectorAll('.mole');
+        const scoreBoard = document.getElementById('score');
+        const timeBoard = document.getElementById('time');
+        const startBtn = document.getElementById('startBtn');
+        const hitSound = new Audio("sounds/hit.mp3");
+        const bgMusic = new Audio("sounds/sound.mp3");
+        const timeButtons = document.querySelectorAll(".timeBtn");
+        let gameDuration = 30; // valor por defecto
+        bgMusic.loop = true;   // que se repita
+        bgMusic.volume = 0.2;  // volumen (0.0 a 1.0)
 
-    const moleImages = [
-        "images/mole1.png",
-        "images/mole2.png",
-        "images/mole3.png",
-        "images/mole4.png", 
-        "images/mole5.png", 
-        "images/mole6.png", 
-        "images/mole7.png", 
-    ];
+        const moleImages = [
+            "images/mole1.png",
+            "images/mole2.png",
+            "images/mole3.png",
+            "images/mole4.png", 
+            "images/mole5.png", 
+            "images/mole6.png", 
+            "images/mole7.png", 
+        ];
 
-    let lastHole;
-    let timeUp = false;
-    let score = 0;
-    let timeLeft = 30;
-    let countdown;
+        let lastHole;
+        let timeUp = false;
+        let score = 0;
+        let timeLeft = 30;
+        let countdown;
 
-    function randomTime(min, max) {
-      return Math.round(Math.random() * (max - min) + min);
-    }
+        function randomTime(min, max) {
+          return Math.round(Math.random() * (max - min) + min);
+        }
 
-    function randomHole() {
-      const index = Math.floor(Math.random() * moles.length);
-      const hole = moles[index];
-      if (hole === lastHole) {
-        return randomHole();
+        function randomHole() {
+          const index = Math.floor(Math.random() * moles.length);
+          const hole = moles[index];
+          if (hole === lastHole) {
+            return randomHole();
+          }
+          lastHole = hole;
+          return hole;
+        }
+
+        function peep() {
+          const time = randomTime(600, 800);
+          const mole = randomHole();
+          mole.classList.add('up');
+          const randomImage = moleImages[Math.floor(Math.random() * moleImages.length)];
+        mole.style.backgroundImage = `url(${randomImage})`;
+          setTimeout(() => {
+            mole.classList.remove('up');
+            if (!timeUp) peep();
+          }, time);
+        }
+    timeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        gameDuration = parseInt(btn.dataset.time);
+        startGame();
+        document.getElementById("startMenu").classList.add("hidden");
+      });
+    });
+
+    function startGame() {
+      score = 0;
+      scoreBoard.textContent = score;
+      timeLeft = gameDuration;
+      timeBoard.textContent = timeLeft;
+      timeUp = false;
+
+      document.getElementById("gameOver").classList.add("hidden");
+
+      // música de fondo si la tienes
+      if (bgMusic) {
+        bgMusic.currentTime = 0;
+        bgMusic.play();
       }
-      lastHole = hole;
-      return hole;
+
+      peep();
+
+      countdown = setInterval(() => {
+        timeLeft--;
+        timeBoard.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          timeUp = true;
+          endGame();
+        }
+      }, 1000);
     }
 
-    function peep() {
-      const time = randomTime(600, 800);
-      const mole = randomHole();
-      mole.classList.add('up');
-       const randomImage = moleImages[Math.floor(Math.random() * moleImages.length)];
-    mole.style.backgroundImage = `url(${randomImage})`;
-      setTimeout(() => {
-        mole.classList.remove('up');
-        if (!timeUp) peep();
-      }, time);
+    function endGame() {
+      bgMusic.pause();
+      
+      document.getElementById("finalScore").textContent = score;
+      document.getElementById("gameOver").classList.remove("hidden");
     }
-timeButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    gameDuration = parseInt(btn.dataset.time);
-    startGame();
-    document.getElementById("startMenu").classList.add("hidden");
-  });
-});
 
-function startGame() {
-  score = 0;
-  scoreBoard.textContent = score;
-  timeLeft = gameDuration;
-  timeBoard.textContent = timeLeft;
-  timeUp = false;
-
-  document.getElementById("gameOver").classList.add("hidden");
-
-  // música de fondo si la tienes
-  if (bgMusic) {
-    bgMusic.currentTime = 0;
-    bgMusic.play();
-  }
-
-  peep();
-
-  countdown = setInterval(() => {
-    timeLeft--;
-    timeBoard.textContent = timeLeft;
-    if (timeLeft <= 0) {
-      clearInterval(countdown);
-      timeUp = true;
-      endGame();
-    }
-  }, 1000);
-}
-
-function endGame() {
-  bgMusic.pause();
-  
-  document.getElementById("finalScore").textContent = score;
-  document.getElementById("gameOver").classList.remove("hidden");
-}
-
-document.getElementById("restartBtn").addEventListener("click", () => {
-  startGame();
-});
+    document.getElementById("restartBtn").addEventListener("click", () => {
+      startGame();
+    });
 
 
     function hit(e) {
